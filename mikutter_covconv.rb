@@ -11,16 +11,18 @@ Plugin.create(:mikutter_covconv) do
   end
 
   filter_gui_postbox_post do |gui_postbox|
+	text =	Plugin.create(:gtk).widgetof(gui_postbox).widget_post.buffer.text
 	if UserConfig[:covconv] == true 
-	  text =	Plugin.create(:gtk).widgetof(gui_postbox).widget_post.buffer.text
 	  response = Net::HTTP.post_form(URI.parse('http://api.ghippos.net/covlang/'),
 									 {'ja_JP'=> text})
 	  xml = REXML::Document.new(response.body)
 	  tweet = xml.elements['covconv/covlang'].text
-	  Service.primary.update(message: tweet)
-	  Plugin.create(:gtk).widgetof(gui_postbox).widget_post.buffer.text = ''
-	  Plugin.filter_cancel!
+	  text = tweet
 	end
+	Service.primary.update(message: text)
+	Plugin.create(:gtk).widgetof(gui_postbox).widget_post.buffer.text = ''
+	Plugin.filter_cancel!
   end
 
 end
+
