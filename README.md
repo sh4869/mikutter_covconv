@@ -1,4 +1,4 @@
-#mikutter_covonv
+#mikutter_covconv
 
 ##これはなに
 けんこふ語に変換してツイートするmikutterプラグインです 
